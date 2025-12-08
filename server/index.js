@@ -17,6 +17,16 @@ console.log("TWILIO_PHONE_NUMBER:", process.env.TWILIO_PHONE_NUMBER ? "✅ Loade
 app.use(cors());
 app.use(express.json());
 
+app.get("/api/auth/health", (req, res) => {
+  res.json({ status: "OK", message: "Backend is live!" });
+});
+
+app.use(cors({
+  origin: "*",   // Or replace with your S3 website URL
+  credentials: true
+}));
+
+
 // ✅ API routes
 app.use("/api/auth", authRoutes);
 
@@ -31,3 +41,6 @@ mongoose
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+
+
