@@ -15,5 +15,53 @@ pipeline {
             }
         }
 
-}
+        stage('FE Build') {
+            steps {
+                sh '''
+                  cd client
+                  npm install
+                  npm run build
+                '''
+            }
+        }
+
+        stage('BE Build') {
+            steps {
+                sh '''
+                  cd server
+                  npm install
+                '''
+            }
+        }
+
+        stage('SonarQube Scan') {
+            steps {
+                sh '''
+                  sonar-scanner \
+                    -Dsonar.projectKey=v1-fe-be \
+                    -Dsonar.sources=client/src,server \
+                    -Dsonar.host.url=$SONAR_HOST \
+                    -Dsonar.login=$SONAR_TOKEN
+                '''
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                sh '''
+                  docker build -t v1-fe:latest client
+                  docker build -t v1-be:latest server
+                '''
+            }
+        }
+
+        stage('Trivy Scan') {
+            steps {
+                sh '''
+                  trivy image --exit-code 1 --severity HIGH,CRITICAL v1-fe:latest
+                  trivy image --exit-code 1 --severity HIGH,CRITICAL v1-be:latest
+                '''
+            }
+        }
+    }
 }
