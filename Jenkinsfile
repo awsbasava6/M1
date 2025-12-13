@@ -6,6 +6,10 @@ pipeline {
         SONAR_TOKEN = credentials('sonar-token')
     }
 
+    tools {
+        nodejs 'node18'
+    }
+
     stages {
 
         stage('Checkout') {
@@ -18,6 +22,8 @@ pipeline {
         stage('FE Build') {
             steps {
                 sh '''
+                  node -v
+                  npm -v
                   cd client
                   npm install
                   npm run build
