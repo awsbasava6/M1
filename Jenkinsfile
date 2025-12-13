@@ -16,4 +16,13 @@ pipeline {
         }
 
 }
+     stage('FE Build') {
+            steps {
+                sh '''
+                  cd client
+                  npm install
+                  npm run build
+                '''
+            }
+        }
 }
