@@ -40,17 +40,20 @@ pipeline {
             }
         }
 
-        stage('SonarQube Scan') {
-            steps {
-                sh '''
-                  sonar-scanner \
+       stage('SonarQube Scan') {
+    steps {
+        script {
+            def scannerHome = tool 'sonar-scanner'
+            withSonarQubeEnv('sonar') {
+                sh """
+                  ${scannerHome}/bin/sonar-scanner \
                     -Dsonar.projectKey=v1-fe-be \
-                    -Dsonar.sources=client/src,server \
-                    -Dsonar.host.url=$SONAR_HOST \
-                    -Dsonar.login=$SONAR_TOKEN
-                '''
+                    -Dsonar.sources=client/src,server
+                """
             }
         }
+    }
+}
 
         stage('Docker Build') {
             steps {
