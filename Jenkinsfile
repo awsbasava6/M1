@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SONAR_HOST  = 'http://13.223.73.106:9000'
+        SONAR_HOST  = 'http://54.173.3.142:9000'
         SONAR_TOKEN = credentials('sonar-token')
     }
 
