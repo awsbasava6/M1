@@ -1,26 +1,21 @@
-
-# ---------------------------
-# Backend (Node.js + Express)
-# ---------------------------
 FROM node:18-alpine
 
-# Create app directory
 WORKDIR /app
 
-# Copy package files
+# Copy dependency files first
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm ci --omit=dev
+# Install production dependencies only
+RUN npm ci --only=production
 
-# Copy all source code
+# Copy application source
 COPY . .
 
-# Expose backend port
+# App port
 EXPOSE 5000
 
-# Set environment variable (PORT comes from .env)
+# Environment variables
 ENV NODE_ENV=production
 
-# Start server
 CMD ["node", "index.js"]
+
