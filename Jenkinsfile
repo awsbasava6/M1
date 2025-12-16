@@ -63,14 +63,22 @@ pipeline {
                 '''
             }
         }
+stage('Trivy Scan') {
+  steps {
+    sh '''
+      trivy image \
+        --exit-code 1 \
+        --severity HIGH,CRITICAL \
+        v1-fe:latest
 
-        stage('Trivy Scan') {
-            steps {
-                sh '''
-                  trivy image --exit-code 1 --severity HIGH,CRITICAL v1-fe:latest
-                  trivy image --exit-code 1 --severity HIGH,CRITICAL v1-be:latest
-                '''
-            }
-        }
+      trivy image \
+        --exit-code 1 \
+        --severity HIGH,CRITICAL \
+        v1-be:latest
+    '''
+  }
+}
+
+      
     }
 }
