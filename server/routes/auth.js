@@ -121,7 +121,7 @@ router.post("/verify-otp", async (req, res) => {
       }
     }
 
-OBOBOB    await user.save();
+    await user.save();
 
     // Delete OTP after success
     await Otp.deleteMany({ phoneNumber });
